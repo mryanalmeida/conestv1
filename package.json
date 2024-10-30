@@ -1,0 +1,22 @@
+{
+  "name": "conest",
+  "version": "1.0.0",
+  "description": "Sistema para gestão de estoque no comercio de bens e serviços.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mryanalmeida/conestv1.git"
+  },
+  "author": "Marcos Almeida",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mryanalmeida/conestv1/issues"
+  },
+  "homepage": "https://github.com/mryanalmeida/conestv1#readme",
+  "dependencies": {
+    "electron": "^33.0.2"
+  }
+}
