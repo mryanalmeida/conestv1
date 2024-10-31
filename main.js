@@ -13,6 +13,7 @@ function createWindow() {
     })
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
     win.loadFile('./src/views/index.html')
+
 }
 
 function aboutWindow() {
