@@ -1,4 +1,4 @@
-const { shell } = require('electron')
+const { shell, ipcMain } = require('electron')
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('node:path')
 
@@ -15,13 +15,18 @@ function createWindow() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
+
+    //botoes
+    ipcMain.on('open-client', () => {
+
+    })
 }
 
 
 //Janela sobre
 function aboutWindow() {
     const about = new BrowserWindow({
-        width: 360,
+        width: 460,
         height: 220,
         autoHideMenuBar: true,
         resizable: false,

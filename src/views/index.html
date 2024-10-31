@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
     <title>CONEST</title>
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/style.css">
 </head>
 
 <body>
-    <h1>CONEST</h1>
-    <P>conest</P>
+    <div class="container">
+        <img src="../public/img/client.png" alt="Cientes" title="Clientes" onclick="clientes()">
+    </div>
+
+
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script src="renderer.js"></script>
 </body>
 
 </html>
