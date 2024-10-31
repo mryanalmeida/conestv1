@@ -1,9 +1,9 @@
-const { shell, ipcMain } = require('electron')
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain } = require('electron/main')
 const path = require('node:path')
 
-//Janela Principal
+let win
 function createWindow() {
+    nativeTheme.themeSource = 'dark'
     win = new BrowserWindow({
         width: 1010,
         height: 720,
@@ -11,33 +11,41 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    //Menu Personalizado
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-
     win.loadFile('./src/views/index.html')
-
-    //botoes
-    ipcMain.on('open-client', () => {
-
-    })
 }
 
-
-//Janela sobre
 function aboutWindow() {
-    const about = new BrowserWindow({
-        width: 460,
-        height: 220,
-        autoHideMenuBar: true,
-        resizable: false,
-        minimizable: false,
-    })
+    nativeTheme.themeSource = 'dark'
+    const main = BrowserWindow.getFocusedWindow()
+    let about
+    if (main) {
+        about = new BrowserWindow({
+            width: 320,
+            height: 210,
+            autoHideMenuBar: true,
+            resizable: false,
+            minimizable: false,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+
     about.loadFile('./src/views/sobre.html')
+    ipcMain.on('close-about', () => {
+        console.log("Recebi a mensagem close-about")
+        if (about && !about.isDestroyed()) {
+            about.close()
+        }
+    })
 }
 
-//Execução assincrona do aplicativo electron
 app.whenReady().then(() => {
     createWindow()
+
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
@@ -51,7 +59,6 @@ app.on('window-all-closed', () => {
     }
 })
 
-//Template do menu
 const template = [
     {
         label: 'Arquivo',
@@ -61,24 +68,24 @@ const template = [
                 accelerator: 'Alt+F4',
                 click: () => app.quit()
             }
-
         ]
     },
     {
         label: 'Zoom',
         submenu: [
             {
-                label: 'Aplicar Zoom',
-                role: 'zoomIn'
+                label: 'Aplicar zoom',
+                accelerator: 'CmdOrCtrl+=',
+                click: () => win.webContents.zoomFactor += 0.1
             },
             {
                 label: 'Reduzir',
                 role: 'zoomOut'
             },
             {
-                label: 'Restaurar o zoom padrao',
+                label: 'Restaurar o zoom padrão',
                 role: 'resetZoom'
-            }
+            },
         ]
     },
     {
