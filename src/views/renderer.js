@@ -1,9 +1,24 @@
-//Botoes
-function fechar(){
-    appendFile.fecharJanela()
+/**
+ * Processos de Renderização
+ */
+
+//Botões
+
+
+function fechar() {
+    api.fecharJanela()
 }
 
-//clientes
-function clientes(){
+function clientes() {
     api.janelaClientes()
+}
+
+function fornecedores() {
+    api.janelaFornecedores()
+}
+function produtos() {
+    api.janelaProdutos()
+}
+function relatorios() {
+    api.janelaRelatorios()
 }
