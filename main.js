@@ -187,9 +187,17 @@ app.whenReady().then(() => {
 
     ///Mlehor lugar para estabelecer a conecxão com o banco de dados
     //importar antes o modulo de conexão no  inicio do codigo
+    //conexão com o banco de dados0
     ipcMain.on('db-connect', async (event, message) => {
         //a linha abaixo estabelece a conexão com banco de dados 
         dbcon = await dbConect()
+        //enviar ao renderizador uma mensagem para trocar o icone do status banco de dados
+        event.reply('db-message', "conectado")
+    })
+
+    //desconectar do banco de dados, ao encerrar a aplicação
+    app.on('before-quit', async () => {
+        await desconectar(dbcon)
     })
 
 
