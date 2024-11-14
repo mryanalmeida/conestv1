@@ -7,7 +7,7 @@
 const mongoose = require('mongoose')
 
 //Definir a URL e autenticação do banco de dados
-const URL = 'mongodb+srv://admin:123senac@clusterconest.zebl9.mongodb.net/'
+const url = 'mongodb+srv://admin:123senac@clusterconest.zebl9.mongodb.net/'
 
 //Status de conexão ("icone de conexão")
 let isConected = false
@@ -28,7 +28,7 @@ const conectar = async () => {
             isConected = true // sinalizar que o banco de dados está conectado
             console.log("MongoDB Conectado")
         } catch (error) {
-            console.log(`Problema detectado: ${erro}`)
+            console.log(`Problema detectado: ${error}`)
         }
 }
 
@@ -43,3 +43,5 @@ const desconectar = async () => {
             console.log(`Problema detectado: ${erro}`)
         }
 }
+//Exportar para o main.js as funçoes desejadas
+module.exports = { dbConect, desconectar }
