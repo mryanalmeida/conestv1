@@ -2,8 +2,15 @@
 // nativeTheme (forçar um tema no sistema operacional)
 // Menu (criar um menu personalizado)
 // shell (acessar links externos)
-const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain} = require('electron/main')
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain } = require('electron/main')
 const path = require('node:path')
+
+//Importação do modulo de conexão
+const { dbConect, desconectar } = require('./db.js')
+//Status de conexão com o banco de dados. No MongoDB é mais eficiente manter uma unica conexão aberta durante todo tempo de vida do aplicativo e usa-la quando nescessário. Fechar e reabrir constantemente a conexão aumenta a sobrecarga e reduz o desempenho do servidor.
+//A variavel abaixo e usada para garantir que o banco de dados inicie desconectado(evitar abrir outra instância)
+let dbcon = null
+
 
 // Janela Principal
 let win
@@ -19,7 +26,7 @@ function createWindow() {
 
     // Menu personalizado
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-    
+
     win.loadFile('./src/views/index.html')
 
     // botões 
@@ -41,14 +48,14 @@ function createWindow() {
 }
 
 // Janela Sobre
-function aboutWindow () {
+function aboutWindow() {
     nativeTheme.themeSource = "light"
     // A linha abaixo obtem a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let about
     // Validar a janela pai
     if (main) {
-        about = new BrowserWindow ({
+        about = new BrowserWindow({
             width: 320,
             height: 160,
             autoHideMenuBar: true, // Esconder o menu
@@ -60,9 +67,9 @@ function aboutWindow () {
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-         })
+        })
     }
-    
+
     about.loadFile('./src/views/sobre.html')
 
     // Fechar a janela quando receber mensagem do processo de renderização.
@@ -78,14 +85,14 @@ function aboutWindow () {
 
 
 // Janela Clientes
-function clientWindow () {
+function clientWindow() {
     nativeTheme.themeSource = "light"
     // A linha abaixo obtem a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let client
     // Validar a janela pai
     if (main) {
-        client = new BrowserWindow ({
+        client = new BrowserWindow({
             width: 800,
             height: 600,
             autoHideMenuBar: true, // Esconder o menu
@@ -94,22 +101,22 @@ function clientWindow () {
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-         })
+        })
     }
-    
+
     client.loadFile('./src/views/clientes.html')
 
-    }
+}
 
 // Janela Fornecedores
-function supplierWindow () {
+function supplierWindow() {
     nativeTheme.themeSource = "light"
     // A linha abaixo obtem a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let supplier
     // Validar a janela pai
     if (main) {
-        supplier = new BrowserWindow ({
+        supplier = new BrowserWindow({
             width: 800,
             height: 600,
             autoHideMenuBar: true, // Esconder o menu
@@ -118,22 +125,22 @@ function supplierWindow () {
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-         })
+        })
     }
-    
+
     supplier.loadFile('./src/views/fornecedores.html')
 
-    }  
-    
-    // Janela Produtos
-function productWindow () {
+}
+
+// Janela Produtos
+function productWindow() {
     nativeTheme.themeSource = "light"
     // A linha abaixo obtem a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let product
     // Validar a janela pai
     if (main) {
-        product = new BrowserWindow ({
+        product = new BrowserWindow({
             width: 800,
             height: 600,
             autoHideMenuBar: true, // Esconder o menu
@@ -142,22 +149,22 @@ function productWindow () {
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-         })
+        })
     }
-    
+
     product.loadFile('./src/views/produtos.html')
 
-    }
+}
 
-    // Janela Relatórios
-function reportWindow () {
+// Janela Relatórios
+function reportWindow() {
     nativeTheme.themeSource = "light"
     // A linha abaixo obtem a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let report
     // Validar a janela pai
     if (main) {
-        report = new BrowserWindow ({
+        report = new BrowserWindow({
             width: 800,
             height: 600,
             autoHideMenuBar: true, // Esconder o menu
@@ -166,17 +173,25 @@ function reportWindow () {
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-         })
+        })
     }
-    
+
     report.loadFile('./src/views/relatorios.html')
 
-    }
+}
 
 
 // Execução assíncrona do aplicativo electron
 app.whenReady().then(() => {
     createWindow()
+
+    ///Mlehor lugar para estabelecer a conecxão com o banco de dados
+    //importar antes o modulo de conexão no  inicio do codigo
+    ipcMain.on('db-connect', async (event, message) => {
+        //a linha abaixo estabelece a conexão com banco de dados 
+        dbcon = await dbConect()
+    })
+
 
     // Comportamento do MAC ao fechar uma janela
     app.on('activate', () => {
@@ -232,17 +247,17 @@ const template = [
         label: 'Zoom',
         submenu: [
             {
-                label:'Aplicar zoom',
+                label: 'Aplicar zoom',
                 role: 'zoomIn'
             },
 
             {
-                label:'Reduzir',
+                label: 'Reduzir',
                 role: 'zoomOut'
             },
 
             {
-                label:'Restaurar o zoom padrão',
+                label: 'Restaurar o zoom padrão',
                 role: 'resetZoom'
             },
         ]
@@ -258,7 +273,7 @@ const template = [
 
             {
                 label: 'Sobre',
-                click: () => aboutWindow() 
+                click: () => aboutWindow()
             }
         ]
     }
