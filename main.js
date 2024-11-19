@@ -11,6 +11,8 @@ const { dbConect, desconectar } = require('./db.js')
 //A variavel abaixo e usada para garantir que o banco de dados inicie desconectado(evitar abrir outra instância)
 let dbcon = null
 
+//importação do Schema Clientes da camada model
+const clienteModel = require('./src/models/Clientes.js')
 
 // Janela Principal
 let win
