@@ -1,47 +1,50 @@
 /**
- * modulo de conexão com o banco de dados
- * uso do mongoose
+ * Módulo de conexão com o banco de dados
+ * Uso do mongoose
  */
 
-//Imortar a biblioteca
 const mongoose = require('mongoose')
 
-//Definir a URL e autenticação do banco de dados
-const url = 'mongodb+srv://Marcos:Mryan250903@cluster0.w5mls.mongodb.net/'
+// definir a URL e autenticação do banco de dados (acrescentar ao final da url um nome para o banco de dados)
+const url = 'mongodb+srv://Marcos:Mryan250903@cluster0.w5mls.mongodb.net/dbconest'
 
-//Status de conexão ("icone de conexão")
-let isConected = false
+// status de conexão ("ícone de conexão")
+let isConnected = false
 
-//Só estabelecer uma nova conexão se não estiver conectado
-const dbConect = async () => {
-    if (isConected === false) {
+// Só estabelecer uma conexão se não estiver conectado 
+const dbConnect = async () => {
+    if (isConnected === false) {
         await conectar()
     }
 }
 
-//conectar
+// conectar
 const conectar = async () => {
-    if (isConected === false)
+    if (isConnected === false) {
         try {
-            //linha abaixo abre a conexão com o MongoDB
+            // a linha abaixo abre a conexão com o MongoDB
             await mongoose.connect(url)
-            isConected = true // sinalizar que o banco de dados está conectado
-            console.log("MongoDB Conectado")
+            isConnected = true //sinalizar que o banco está conectado
+            console.log("MongoDB conectado")
         } catch (error) {
             console.log(`Problema detectado: ${error}`)
         }
+    }
 }
 
+// desconectar
 const desconectar = async () => {
-    if (isConected === true)
+    if (isConnected === true) {
         try {
-            //linha abaixo encerra a conexão com o MongoDB
+            // a linha abaixo encerra a conexão com o MongoDB
             await mongoose.disconnect(url)
-            isConected = false // sinalizar que o banco de dados está desconectado
-            console.log("MongoDB Desconectado")
+            isConnected = false //sinalizar que o banco não está conectado
+            console.log("MongoDB desconectado")
         } catch (error) {
-            console.log(`Problema detectado: ${erro}`)
+            console.log(`Problema detectado: ${error}`)
         }
+    }
 }
-//Exportar para o main.js as funçoes desejadas
-module.exports = { dbConect, desconectar }
+
+// exportar para p main as funções desejadas
+module.exports = {dbConnect, desconectar}
