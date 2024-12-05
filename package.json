@@ -18,6 +18,6 @@
   "homepage": "https://github.com/mryanalmeida/conestv1#readme",
   "dependencies": {
     "electron": "^33.0.2",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.4"
   }
 }
