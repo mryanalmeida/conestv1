@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Evitar ataques de injeção de código malicioso -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
-    <title>Conest - Produtos</title>
+    <title>CONEST - Produtos</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
@@ -14,12 +14,55 @@
 <body>
     <div class="container">
         <h1>Produtos</h1>
+        <form id="frmProduct" class="mt-2 row g-3">
+            <!-- Buscar fornecedores -->
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="searchProduct" maxlength="30" spellcheck="false">
+            </div>
+
+            <div class="col-md-4">
+                <button class="btn btn-primary" id="btnRead">Buscar</button>
+            </div>
+
+            <hr class="mt-4 border border-primary border -1">
+
+            <!-- ID do produto (oculto) -->
+            <div class="col-md-6" id="idProduct">
+                <input class="form-control" type="text" id="inputProduct" placeholder="id">
+            </div>
+
+            <!-- Nome do produto -->
+            <div class="col-md-8">
+                <label for="inputNameProduct" class="form-label">Nome do Produto</label>
+                <input class="form-control" type="text" id="inputNameProduct" spellcheck="false" required
+                    maxlength="50">
+            </div>
+
+            <!-- Código de barras -->
+            <div class="col-md-4">
+                <label for="inputCodProduct" class="form-label">Código de Barras</label>
+                <input class="form-control" type="text" id="inputCodProduct" spellcheck="false" required
+                    maxlength="15">
+            </div>
+
+            <!-- Preço -->
+            <div class="col-md-8">
+                <label for="inputPrecoProduct" class="form-label">Preço</label>
+                <input class="form-control" type="text" id="inputPrecoProduct" spellcheck="false" maxlength="50">
+            </div>
+
+            <!-- Botões -->
+            <div class="mt-5">
+                <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
+                <button type="reset" class="btn" id="btnReset"></button>
+            </div>
+        </form>
     </div>
-    
-    
+
     <script src="../public/js/bootstrap.min.js"></script>
     <script src="produtos.js"></script>
-    
 </body>
 
 </html>

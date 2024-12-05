@@ -1,19 +1,19 @@
-/**
- * Segurança e Desempenho
- */
+const { contextBridge, ipcRenderer } = require('electron')
 
-const { contextBridge, ipcRenderer, ipcMain } = require('electron')
-
-//Estabelecer a conexão com o banco de dados (envio de pedido para o main abrir a conexão com o banco de dados)
+// Estabelecer a conexão com o banco (envio de pedido para o main abrir a conexão com o banco de dados)
 ipcRenderer.send('db-connect')
 
-// Processos de comunicação entre renderer e main
 contextBridge.exposeInMainWorld('api', {
-    // A linha abaixo cria uma função que envia uma mensagem ao processo principal
-    dbMensagem: (message) => ipcRenderer.on('db-message', message),
+    status: (message) => ipcRenderer.on('db-message', message),
     fecharJanela: () => ipcRenderer.send('close-about'),
     janelaClientes: () => ipcRenderer.send('open-client'),
     janelaFornecedores: () => ipcRenderer.send('open-supplier'),
     janelaProdutos: () => ipcRenderer.send('open-product'),
-    janelaRelatorios: () => ipcRenderer.send('open-report')
+    janelaRelatorios: () => ipcRenderer.send('open-report'),
+    resetarFormulario: (args) => ipcRenderer.on('reset-form', args),
+    novoCliente: (cliente) => ipcRenderer.send('new-client', cliente),
+    buscarCliente: (cliNome) => ipcRenderer.send('search-client', cliNome),
+    novoFornecedor: (fornecedor) => ipcRenderer.send('new-supplier', fornecedor),
+    novoProduto: (produto) => ipcRenderer.send('new-product', produto),
+    renderizarCliente: (dadosCliente) => ipcRenderer.on('client-data', dadosCliente)
 })

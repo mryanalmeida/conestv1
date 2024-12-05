@@ -1,10 +1,4 @@
-/**
- * Processos de Renderização
- */
-
-//Botões
-
-
+// Botões
 function fechar() {
     api.fecharJanela()
 }
@@ -16,14 +10,16 @@ function clientes() {
 function fornecedores() {
     api.janelaFornecedores()
 }
+
 function produtos() {
     api.janelaProdutos()
 }
+
 function relatorios() {
     api.janelaRelatorios()
 }
 
-//inserção da data no rodapé
+// Inserção da data no rodapé
 function obterData() {
     const data = new Date()
     const options = {
@@ -34,12 +30,13 @@ function obterData() {
     }
     return data.toLocaleDateString('pt-BR', options)
 }
+
 document.getElementById('dataAtual').innerHTML = obterData()
 
-//icone de status do banco de dados
-api.dbMensagem((event, message) => {
-    //validação e troca do item
-    if (message === "conectado") {
+// Ícone de status do banco de dados
+api.status((event, message) => {
+    // Validação e troca do ícone
+    if (message === "conectado") {             
         document.getElementById('iconDB').src = "../public/img/dbon.png"
     } else {
         document.getElementById('iconDB').src = "../public/img/dboff.png"
