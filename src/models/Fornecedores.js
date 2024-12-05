@@ -1,23 +1,44 @@
 /**
- * Modelo de dados (Fornecedores)
+ * Modelo de dados(Clientes)
  */
 
-// Importação de bibliotecas
-const { model, Schema } = require('mongoose')
+//Importação de bivliotecas
+const {model, schema, Schema} = require ('mongoose')
 
-// Criação da estrutura de dados ("tabela") que será usada no banco
-const fornecedorSchema = new Schema({
-    nomeFornecedor: {
+//Crição da estrutura de dados ("tabela") que será usada no banco 
+const fornecedoresSchema = new Schema ({
+    nomeFornecedores:{
         type: String
     },
-    foneFornecedor: {
+    foneFornecedores:{
         type: String
     },
-    siteFornecedor: {
+    siteFornecedores:{
+        type: String
+    },
+    cepFornecedores:{
+        type: String
+    },
+    logradouroFornecedores:{
+        type: String
+    },
+    bairroFornecedores:{
+        type: String
+    },
+    cidadeFornecedores:{
+        type: String
+    },
+    ufFornecedores:{
+        type: String
+    },
+    numeroFornecedores:{
+        type: String
+    },
+    complementoFornecedores:{
         type: String
     }
 })
 
-// Exportar para o main.js
-// Para modificar o nome da coleção ("tabela"), basta modificar na linha abaixo o rótulo 'Fornecedores', sempre iniciando com a letra maiuscula
-module.exports = model('Fornecedores', fornecedorSchema)
+//exportar para o main
+// Para modificar o nome da coleção ("tabela"), basta, modificar na a linha abaixo o rotulo 'Clientes', sempre iniciando com letra maiuscula
+module.exports = model('Fornecedores', fornecedoresSchema)

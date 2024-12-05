@@ -20,14 +20,14 @@
                 <input type="text" class="form-control" id="searchClient" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" id="btnRead" onclick="buscarCliente()">Buscar</button>
+                <button class="btn btn-primary" id="btnRead">Buscar</button>
             </div>
 
             <hr class="mt-4 border border-primary border -1">
 
             <!-- Id do cliente (oculto) -->
-            <div class="col-md-4" id="idClient">
-                <input class="form-control" type="text" id="inputClient" placeholder="id">
+            <div class="col-md-6" id="idClient">
+                <input class="form-control" type="text" id="inpuClient" placeholder="id">
             </div>
 
             <!-- Nome -->
@@ -51,45 +51,47 @@
             <!-- CEP -->
             <div class="col-md-4">
                 <label for="inputCepClient" class="form-label">CEP</label>
-                <input class="form-control" type="text" id="inputCepClient" spellcheck="false"
-                    maxlength="9" placeholder="Digite o CEP">
+                <input class="form-control" type="cep" id="inputCepClient" spellcheck="false" maxlength="50" onblur="buscarEndereco()" required>
             </div>
 
-            <!-- Cidade -->
-            <div class="col-md-8">
-                <label for="inputCityClient" class="form-label">Cidade</label>
-                <input class="form-control" type="email" id="inputCityClient" spellcheck="false" maxlength="50">
+            <!-- LOGRADOURO-->
+            <div class="col-md-6">
+                <label for="inputLogradouroClient" class="form-label">Logradouro</label>
+                <input class="form-control" type="logradouro" id="inputLogradouroClient" spellcheck="false"
+                    maxlength="50">
             </div>
 
-            <!-- Estado -->
+            <!-- BAIRRO-->
+            <div class="col-md-6">
+                <label for="inputBairroClient" class="form-label">Bairro</label>
+                <input class="form-control" type="bairro" id="inputBairroClient" spellcheck="false" maxlength="50">
+            </div>
+
+            <!-- CIDADE-->
             <div class="col-md-4">
-                <label for="inputStateClient" class="form-label">Estado</label>
-                <input class="form-control" type="text" id="inputStateClient" spellcheck="false" maxlength="2">
+                <label for="inputCidadeClient" class="form-label">Cidade</label>
+                <input class="form-control" type="text" id="inputCidadeClient" spellcheck="false" maxlength="50">
             </div>
 
-            <!-- Endereço -->
-            <div class="col-md-8">
-                <label for="inputStreetClient" class="form-label">Logradouro</label>
-                <input class="form-control" type="text" id="inputStreetClient" spellcheck="false" maxlength="50">
+              <!-- UF-->
+              <div class="col-md-1">
+                <label for="inputUfClient" class="form-label">UF</label>
+                <input class="form-control" type="text" id="inputUfClient" spellcheck="false" maxlength="50">
             </div>
 
-            <!-- Número do Endereço -->
-            <div class="col-md-4">
-                <label for="inputNumberClient" class="form-label">Nº</label>
-                <input class="form-control" type="text" id="inputNumberClient" spellcheck="false" maxlength="5">
+
+             <!-- Numero-->
+             <div class="col-md-2">
+                <label for="inputNumeroClient" class="form-label">Número</label>
+                <input class="form-control" type="number" id="inputNumeroClient" spellcheck="false" maxlength="50" required>
             </div>
 
-            <!-- Complemento -->
-            <div class="col-md-4">
-                <label for="inputComplementClient" class="form-label">Complemento</label>
-                <input class="form-control" type="text" id="inputComplementClient" spellcheck="false" maxlength="5">
+             <!--Complemento-->
+             <div class="col-md-5">
+                <label for="inputComplementoClient" class="form-label">Complemento</label>
+                <input class="form-control" type="text" id="inputComplementoClient" spellcheck="false" maxlength="50">
             </div>
 
-            <!-- Bairro -->
-            <div class="col-md-4">
-                <label for="inputNeighborhoodClient" class="form-label">Bairro</label>
-                <input class="form-control" type="text" id="inputNeighborhoodClient" spellcheck="false" maxlength="50">
-            </div>
 
             <!-- Botões -->
             <div class="mt-5">
@@ -102,8 +104,8 @@
         </form>
     </div>
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/js/script.js"></script>
     <script src="clientes.js"></script>
+   
 </body>
 
 </html>

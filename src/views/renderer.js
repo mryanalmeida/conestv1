@@ -1,4 +1,4 @@
-// Botões
+// botões
 function fechar() {
     api.fecharJanela()
 }
@@ -19,7 +19,7 @@ function relatorios() {
     api.janelaRelatorios()
 }
 
-// Inserção da data no rodapé
+// inserção da data no rodapé
 function obterData() {
     const data = new Date()
     const options = {
@@ -34,8 +34,8 @@ function obterData() {
 document.getElementById('dataAtual').innerHTML = obterData()
 
 // Ícone de status do banco de dados
-api.status((event, message) => {
-    // Validação e troca do ícone
+api.dbMensagem((event, message) => {
+    // validação e troca do ícone
     if (message === "conectado") {             
         document.getElementById('iconDB').src = "../public/img/dbon.png"
     } else {

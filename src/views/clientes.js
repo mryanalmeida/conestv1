@@ -1,119 +1,98 @@
 /**
- * Processo de renderização
+ * Processo de renderizção
  * clientes.html
  */
-// Array usado nós métodos para manipulação da estrutura de dados
-let arrayCliente = []
 
-// CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-//Passo 1 - slide (capturar os dados dos inputs do form)
+
+//Crud Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//Passo 1- slide (capturar os dados dos imputs do form)
 let formCliente = document.getElementById('frmClient')
 let nomeCliente = document.getElementById('inputNameClient')
-let foneCliente = document.getElementById('inputPhoneClient')
+let foneCliente = document.getElementById('inputPhoneClient') 
 let emailCliente = document.getElementById('inputEmailClient')
+let cepCliente = document.getElementById('inputCepClient')
+let logradouroCliente = document.getElementById('inputLogradouroClient')
+let bairroCliente = document.getElementById('inputBairroClient')
+let cidadeCliente = document.getElementById('inputCidadeClient')
+let ufCliente = document.getElementById('inputUfClient')
+let numeroCliente = document.getElementById('inputNumeroClient')
+let complementoCliente = document.getElementById('inputComplementoClient')
 
-// Evento associado ao botão adicionar (quando o botão for pressionado)
+
+
+//Evento  associado ao botão adicionar (quando o botão for pressionado)
 formCliente.addEventListener('submit', async (event) => {
-    // evitar o comportamento padrão de envio em um form
+    //Evitar o comportamento pradrão de envio em um form
     event.preventDefault()
-    //teste importante! (fluxo dos dados)
-    console.log(nomeCliente.value, foneCliente.value, emailCliente.value)
+    //Teste importante! (fluxo de dados)
+    //console.log(nomeCliente.value, foneCliente.value, emailCliente.value)
 
     //Passo 2 - slide (envio das informações para o main)
-    // criar um objeto
+    //Criar um objeto
     const cliente = {
-        nomeCli: nomeCliente.value,
-        foneCli: foneCliente.value,
-        emailCli: emailCliente.value
+        nomeCli: nomeCliente.value, 
+        foneCli: foneCliente.value, 
+        emailCli: emailCliente.value,
+        cepCli: cepCliente.value,
+        logradouroCli: logradouroCliente.value,
+        bairroCli: bairroCliente.value,
+        cidadeCli: cidadeCliente.value,
+        ufCli: ufCliente.value,
+        numeroCli: numeroCliente.value,
+        complementoCli: complementoCliente.value
     }
     api.novoCliente(cliente)
 })
-// Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+//Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+api.resetarFormulario((args)=>{
+   document.getElementById('inputNameClient').value=""
+   document.getElementById('inputPhoneClient').value=""
+   document.getElementById('inputEmailClient').value=""
+   document.getElementById('inputCepClient').value=""
+   document.getElementById('inputLogradouroClient').value=""
+   document.getElementById('inputBairroClient').value=""
+   document.getElementById('inpuCidadeClient').value=""
+   document.getElementById('inpuUfClient').value=""
+   document.getElementById('inpuNumeroClient').value=""
+   document.getElementById('inpuComplementoClient').value=""
+})
 
-// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-function buscarCliente() {
-    // Passo 1 (slides)
-    let cliNome = document.getElementById('searchClient').value
-    console.log(cliNome) // Teste do passo 1
-    // Passo 2 (slide) - enviar o pedido de busca do cliente ao main
-    api.buscarCliente(cliNome)
-    // Passo 5 - Recebimento dos dados do cliente
-    api.renderizarCliente((event, dadosCliente) => {
-        // (Teste de recebimento dos dados do cliente)
-        console.log(dadosCliente)
-        // Passo 6 (slide): renderização dos dados do cliente no formulário
-        const clienteRenderizado = JSON.parse(dadosCliente)
-        arrayCliente = clienteRenderizado
-        // Teste para entendimento da lógica
-        console.log(arrayCliente)
-        // Percorrer o array de clientes, extrair os dados e setar (preencher) os campos do formulário
-        arrayCliente.forEach((c) => {
-            document.getElementById('inputNameClient').value = c.nomeCliente
-            document.getElementById('inputPhoneClient').value = c.foneCliente
-            document.getElementById('inputEmailClient').value = c.emailCliente
-            document.getElementById('inputClient').value = c._id
-        })
-    })
-}
-// Fim CRUD Read <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// Função que faz a busca do endereço pelo CEP
+async function buscarEndereco() {
+    const cep = document.getElementById('inputCepClient').value.replace('-', '').replace('.', ''); // Retira caracteres não numéricos
 
-// Função para buscar o CEP
-function buscarCep(cep) {
-    // Verifica se o CEP possui 8 caracteres (ex: 12345678)
-    if (cep.length === 8) {
-        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.erro) {
-                    alert("CEP não encontrado.")
-                } else {
-                    // Preenche os campos do formulário com os dados do CEP
-                    document.getElementById('inputStreetClient').value = data.logradouro || ""
-                    document.getElementById('inputNeighborhoodClient').value = data.bairro || ""
-                    document.getElementById('inputCityClient').value = data.localidade || ""
-                    document.getElementById('inputStateClient').value = data.uf || ""
-                }
-            })
-            .catch(err => {
-                alert("Erro ao buscar CEP.")
-                console.error(err);
-            });
-    } else {
-        alert("Por favor, insira um CEP válido.")
+    // Verifica se o CEP tem o formato correto
+    if (!cep || cep.length !== 8) {
+        alert('CEP inválido.');
+        return;
+    }
+
+    try {
+        // Faz a requisição para a API do ViaCEP
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        // Verifica se o CEP retornou erro
+        if (data.erro) {
+            alert('CEP não encontrado.');
+            return;
+        }
+
+        // Preenche os campos do formulário com os dados do endereço
+        document.getElementById('inputLogradouroClient').value = data.logradouro || '';  // Logradouro
+        document.getElementById('inputBairroClient').value = data.bairro || '';    // Bairro
+        document.getElementById('inputCidadeClient').value = data.localidade || ''; // Cidade
+        document.getElementById('inputUfClient').value = data.uf || '';           // UF
+
+    } catch (error) {
+        console.error('Erro ao buscar o endereço:', error);
+        alert('Erro ao buscar o endereço. Tente novamente.');
     }
 }
 
-// Formatar CEP
-function formatarCEP(input) {
-    let value = input.value.replace(/\D/g, '') // Remove caracteres não numéricos
-    if (value.length > 5) {
-        value = value.replace(/(\d{5})(\d)/, '$1-$2') // Adiciona o hífen
-    }
-    input.value = value
-}
 
-// Função chamada ao perder o foco ou ao digitar no campo CEP
-document.getElementById('inputCepClient').addEventListener('blur', function () {
-    const cep = this.value.replace(/\D/g, '') // Remove qualquer caractere não numérico
-    if (cep) {
-        buscarCep(cep)
-    }
-})
-
-// Caso o usuário insira o CEP e pressione Enter, também podemos buscar
-document.getElementById('inputCepClient').addEventListener('input', function () {
-    const cep = this.value.replace(/\D/g, '') // Remove qualquer caractere não numérico
-    if (cep.length === 8) {  // Se o CEP já tiver 8 caracteres
-        buscarCep(cep)
-    }
-})
-// Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-api.resetarFormulario((args) => {
-    console.log("teste de recebimento do main - pedido para resetar o form")
-    document.getElementById('inputNameClient').value = ""
-    document.getElementById('inputPhoneClient').value = ""
-    document.getElementById('inputEmailClient').value = ""
-})
-// Fim - reset form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//Fim - Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
